@@ -79,10 +79,14 @@ struct MyWidgetEntryView : View {
           Text(text)
             .foregroundColor(Color.white)
             .lineLimit(1)
-          Divider()
+            .widgetURL(URL(string: getPercentEcododedString("widget://deeplink?text=\(text)")))
         }
       }
     }
+  }
+  
+  private func getPercentEcododedString(_ string: String) -> String {
+    string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
   }
 }
 

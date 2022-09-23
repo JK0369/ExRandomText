@@ -9,9 +9,26 @@ import SwiftUI
 
 @main
 struct RandomTextApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+  @State var text: String = ""
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environment(\.deepLinkText, text)
+        .onOpenURL { url in
+          text = url.absoluteString.removingPercentEncoding ?? ""
         }
     }
+  }
+}
+
+struct DeepLinkEnv: EnvironmentKey {
+  static let defaultValue = ""
+}
+
+extension EnvironmentValues {
+  var deepLinkText: String {
+    get { self[DeepLinkEnv.self] }
+    set { self[DeepLinkEnv.self] = newValue }
+  }
 }

@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+  @Environment(\.deepLinkText) var deepLinkText: String
+  
   var body: some View {
-    Text("Hello, world!")
+    if deepLinkText.isEmpty {
+      Text("Hello World")
+    } else {
+      Text(deepLinkText)
+    }
   }
 }
 
