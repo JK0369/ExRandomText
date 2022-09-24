@@ -9,7 +9,9 @@ import SwiftUI
 
 @main
 struct RandomTextApp: App {
+  @Environment(\.scenePhase) var scenePhase
   @State var text: String = ""
+  @State var isPresented: Bool = false
   
   var body: some Scene {
     WindowGroup {
@@ -17,7 +19,26 @@ struct RandomTextApp: App {
         .environment(\.deepLinkText, text)
         .onOpenURL { url in
           text = url.absoluteString.removingPercentEncoding ?? ""
+          isPresented = true
         }
+        .onChange(of: scenePhase) { phase in
+          guard phase == .active else { return }
+          isPresented = !text.isEmpty
+        }
+        .sheet(
+          isPresented: $isPresented,
+          onDismiss: {
+            isPresented = false
+            text = ""
+          },
+          content: {
+            if !text.isEmpty {
+              Text(text)
+                .font(.title)
+                .foregroundColor(.primary)
+            }
+          }
+        )
     }
   }
 }
