@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct RandomTextApp: App {
-  @Environment(\.scenePhase) var scenePhase
   @State var text: String = ""
   @State var isPresented: Bool = false
   
@@ -20,10 +19,6 @@ struct RandomTextApp: App {
         .onOpenURL { url in
           text = url.absoluteString.removingPercentEncoding ?? ""
           isPresented = true
-        }
-        .onChange(of: scenePhase) { phase in
-          guard phase == .active else { return }
-          isPresented = !text.isEmpty
         }
         .sheet(
           isPresented: $isPresented,
